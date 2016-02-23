@@ -22,3 +22,31 @@ Overall, I highly recommend this book for people wanting to implement replicatio
 Cheers,
 Chuck Lathrope
 	
+05/04/2013 - SQL Replication Distribution Cleanup Job Blocking Problem
+
+I have been having a real issue with Replication's Distribution Cleanup job on our dedicated distributor server. It prevents the subscribers from updating their history, and making all my custom reports look like everything is latent, when in reality it may or may not be latent. I created a job to stop the job if it has been blocking for more than 5 minutes with this bit of code:
+ 
+`DECLARE    @binaryvalue BINARY(16)`
+<br />
+`SELECT @binaryvalue = CONVERT(BINARY(16), job_id)`
+<br />
+`FROM   msdb.dbo.sysjobs (NOLOCK)`
+<br />
+`WHERE  name = 'Distribution clean up: distribution'`
+<br />
+`IF EXISTS (`
+<br />
+`   SELECT  spid`
+<br />
+`   FROM    sys.sysprocesses`
+<br />
+`   WHERE   program_name = 'SQLAgent - TSQL JobStep (Job '+ sys.fn_varbintohexstr(@binaryvalue) + ' : Step 1)'`
+<br />
+`           AND DATEDIFF(mi, login_time, GETDATE()) >= 5`
+<br />
+`           AND blocked > 0 ) `
+<br />
+`EXEC msdb.dbo.sp_stop_job 'Distribution clean up: distribution'`
+<br />
+
+I hope it helps you too!
