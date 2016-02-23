@@ -1,6 +1,8 @@
 # SQL Server Replication Code Repository
 SQL Server Replication information, scripts, and procedures for custom alerting.
 
+Check out the files in the repository. I added two extra non-replication procs there, prc_Config_DBMail.sql which will help configure your SQL Server's DBMail feature for you. Just follow instructions it provides. I also added prc_InternalSendMail.sql which will automatically create DBMail profiles for you with zero effort.
+
 ##Chuck Lathrope an Author in Tribal SQL
 Redgate and MidnightDBA organized a bunch of new authors to create a book on SQL Server topics, called "<a href="http://www.amazon.com/Tribal-SQL-Tony-Davis/dp/1906434808/" target="_blank">Tribal SQL</a>". I wrote the "Taming Replication" chapter on transactional replication, which covers all aspects of setup, performance, and troubleshooting. The book really covers what each of us authors thought was important tribal knowledge that we are passionate about. The books website is <a href="http://www.tribalsql.com" target="_blank">www.tribalsql.com</a> and all proceeds go to Computers 4 Africa charity.
 
